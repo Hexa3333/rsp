@@ -2,24 +2,23 @@ The bot is multithreaded:
   +1 thread is used for responding to people automatically
   +1 thread is used for the programmer to use manually
 
-  + The bot reads from a file, named {username}.rsp, and if the users name is called for
-the first time, it runs the indexing algorithm. Then a random string (wrapped around "")
-is returned as a string according to the requested token.
+  + The bot reads from a file, named {username}.rsp, (if the users name is called for
+the first time, it runs the indexing algorithm) then a random string (wrapped around "")
+is dynamically read as a string according to the header. (Only supports single lines for now)
 
   + Global file (global.rsp) for replying generally.
 
   .rsp format example:
 []
-# cunku blabla bla
-"funny sex guy arrived"
-"patron geldi"
-"anal time"
+# because bla bla
+"replymaxxing"
+"whatever you say"
 
-[sa]
-"as kardes"
+[hello]
+"hello"
 
-[allah yok]:
-"arastirmani oneririm"
+[bots are gay]:
+"No u"
 
 
 TERMINOLOGY:
