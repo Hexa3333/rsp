@@ -1,8 +1,42 @@
+#include <cstring>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include "rsp.h"
+
+#define REPLY_MAXLEN 512
+#define COMMENT_MAXLEN 512
+
+
+static void LTrimWhitespace(char* str)
+{
+  if (!str)
+    return;
+
+  char* it = str;
+  while (*it == ' ')
+    ++it;
+
+  memmove(str, it, strlen(it)+1);
+}
+
+static void RTrimWhitespace(char* str)
+{
+  if (!str)
+    return;
+
+  int count = 0;
+  int str_length = strlen(str);
+  char* it = str + str_length - 1;
+  while(*it == ' ')
+  {
+    count++;
+    --it;
+  }
+
+  str[str_length-count] = 0;
+}
 
 rsp CreateRspFromFile(const char* username)
 {
@@ -28,10 +62,13 @@ rsp CreateRspFromFile(const char* username)
   char c;
   while((c = fgetc(fp)) != EOF)
   {
+    if (c == ' ')
+      continue;
+
     if (c == TOKEN_POUND) /* Comment */
     {
-      char _trash[256];
-      fgets(_trash, 256, fp);
+      char _trash[COMMENT_MAXLEN];
+      fgets(_trash, COMMENT_MAXLEN, fp);
     }
 
     if (c == TOKEN_LBRACK)
@@ -44,12 +81,11 @@ rsp CreateRspFromFile(const char* username)
         header[i] = c;
         ++i;
       }
-      /* if empty == _DEFAULT_ */
+      LTrimWhitespace(header);
       if (header[0] == 0)
         ret.data.headers[ret.data.headerCount] = strdup("_DEFAULT_");
       else
         ret.data.headers[ret.data.headerCount] = strdup(header);
-
 
       ret.data.headerStartIndexes[ret.data.headerCount] = ftell(fp);
       ret.data.headerReplyCount[ret.data.headerCount] = 0;
@@ -63,8 +99,8 @@ rsp CreateRspFromFile(const char* username)
       /* -1 because the block before this modifies the headerCount */
       ++ret.data.headerReplyCount[ret.data.headerCount-1];
       /* clear line */
-      char _trash[512];
-      fgets(_trash, 512, fp);
+      char _trash[REPLY_MAXLEN];
+      fgets(_trash, REPLY_MAXLEN, fp);
     }
   }
 
@@ -72,14 +108,9 @@ rsp CreateRspFromFile(const char* username)
   return ret;
 }
 
-char** GetResponsesFromHeader(rsp_data in, const char* header)
-{
-  return NULL;
-}
-
 char* GetReply(rsp in, const char* header)
 {
-  char ret[512] = {};
+  char ret[REPLY_MAXLEN] = {};
 
   /* Add trailing .rsp */
   char fileName[128] = {};
@@ -104,8 +135,8 @@ char* GetReply(rsp in, const char* header)
 
   srand(time(0));
   unsigned int callIndex = rand() % in.data.headerReplyCount[headi];
-  char buffer[512] = {};
-  while (fgets(buffer, 512, fp) != NULL)
+  char buffer[COMMENT_MAXLEN] = {};
+  while (fgets(buffer, COMMENT_MAXLEN, fp) != NULL)
   {
     if (buffer[0] == TOKEN_POUND ||
         buffer[0] == '\n') continue;

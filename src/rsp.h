@@ -24,7 +24,6 @@ struct rsp
 };
 
 rsp CreateRspFromFile(const char* username);
-char** GetResponsesFromHeader(rsp_data in, const char* header);
 char* GetReply(rsp in, const char* header);
 void FreeRsp(rsp in);
 

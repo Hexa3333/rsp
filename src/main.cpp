@@ -10,6 +10,7 @@
 
 /* TODO: ADD TRIM FUNCTIONS */
 
+#include <cstring>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,16 +23,9 @@ enum struct SPECIAL_HEADER
 /* TODO: Shared headers:
  * [hi, hello] */
 
-
-
 int main(void)
 {
   rsp hexa = CreateRspFromFile("../rsp/hexa3333");
-  /*
-  for (int i = 0; i < hexa.data.headerCount; i++)
-  {
-    printf("%s\n", hexa.data.headers[i]);
-  } */
 
   char* reply = GetReply(hexa, "allah yok");
   printf("%s\n", reply);
