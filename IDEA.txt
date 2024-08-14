@@ -2,6 +2,8 @@ The bot is multithreaded:
   +1 thread is used for responding to people automatically
   +1 thread is used for the programmer to use manually
 
+  + Manual mode for the developer to text
+
   + The bot reads from a file, named {username}.rsp, (if the users name is called for
 the first time, it runs the indexing algorithm) then a random string (wrapped around "")
 is dynamically read as a string according to the header. (Only supports single lines for now)

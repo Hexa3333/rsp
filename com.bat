@@ -1,5 +1,6 @@
 @echo off
-SET SRC=src\main.cpp
+SET SRC=src\main.cpp^
+        src\rsp.cpp
 
 mkdir build
 
