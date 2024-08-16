@@ -6,8 +6,6 @@
 #include "rsp.h"
 
 #define REPLY_MAXLEN 512
-#define COMMENT_MAXLEN 512
-
 
 static void LTrimWhitespace(char* str)
 {
@@ -67,8 +65,8 @@ rsp CreateRspFromFile(const char* username)
 
     if (c == TOKEN_POUND) /* Comment */
     {
-      char _trash[COMMENT_MAXLEN];
-      fgets(_trash, COMMENT_MAXLEN, fp);
+      char _trash[512];
+      fgets(_trash, 512, fp);
     }
 
     if (c == TOKEN_LBRACK)
@@ -92,15 +90,15 @@ rsp CreateRspFromFile(const char* username)
       ++ret.data.headerCount;
     }
 
+    /* TODO: there must be a better way: */
     /* ++ header reply count */
     if (c == TOKEN_QUOTE)
     {
-      /* TODO: there must be a better way: */
       /* -1 because the block before this modifies the headerCount */
       ++ret.data.headerReplyCount[ret.data.headerCount-1];
       /* clear line */
-      char _trash[REPLY_MAXLEN];
-      fgets(_trash, REPLY_MAXLEN, fp);
+      char _trash[REPLY_MAXLEN+3];
+      fgets(_trash, REPLY_MAXLEN+3, fp);
     }
   }
 
@@ -119,25 +117,33 @@ char* GetReply(rsp in, const char* header)
 
   /* Find the header index */
   int headi = 0;
+  int found = 1;
   for (headi = 0; headi < in.data.headerCount; ++headi)
   {
     /* found one */
-    if (strcmp(in.data.headers[headi], header) == 0)
+    if ((found = strcmp(in.data.headers[headi], header)) == 0)
     {
       break;
     }
   }
 
-  /* TODO: Maybe a better random gen ? - Might not be necessary though */
+  /* No such header exists */
+  if (!found)
+  {
+    fprintf(stderr, "No such header exists in %s's entries: %s\n", in.userName, header);    
+  }
 
   FILE* fp = fopen(fileName, "r");
   fseek(fp, in.data.headerStartIndexes[headi], SEEK_SET);
 
   srand(time(0));
   unsigned int callIndex = rand() % in.data.headerReplyCount[headi];
-  char buffer[COMMENT_MAXLEN] = {};
-  while (fgets(buffer, COMMENT_MAXLEN, fp) != NULL)
+  char buffer[512] = {};
+  while (fgets(buffer, 512, fp) != NULL)
   {
+    LTrimWhitespace(buffer);
+    RTrimWhitespace(buffer);
+
     if (buffer[0] == TOKEN_POUND ||
         buffer[0] == '\n') continue;
     

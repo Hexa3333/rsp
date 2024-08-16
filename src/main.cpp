@@ -5,12 +5,8 @@
 
 /* TODO: Change line-per to multi line */
 
-/* TODO: ADD TRIM FUNCTIONS */
-
-#include <cstring>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "rsp.h"
 
 enum struct SPECIAL_HEADER
