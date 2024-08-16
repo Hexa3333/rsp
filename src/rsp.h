@@ -1,3 +1,11 @@
+/* Lexing is shit but this is my first time after all.
+ * There is no trimming and stuff like that +
+ * There is no way of checking errors in code; write proper rsp files */
+
+/* TODO: Change line-per to multi line */
+/* TODO: Shared headers:
+ * [hi, hello] */
+
 #ifndef RSP_H_
 #define RSP_H_
 

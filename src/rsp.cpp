@@ -128,7 +128,7 @@ char* GetReply(rsp in, const char* header)
   }
 
   /* No such header exists */
-  if (!found)
+  if (found != 0)
   {
     fprintf(stderr, "No such header exists in %s's entries: %s\n", in.userName, header);    
   }

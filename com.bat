@@ -1,12 +1,5 @@
 @echo off
-SET SRC=src\main.cpp^
-        src\rsp.cpp
-
-mkdir build
 
 call vcvars64.bat
-call cl %SRC%^
- -Zi^
- -Fe:build\DiscordBot.exe^
- -Fo:build\^
- -Fd:build\ 
+call cl /c src\rsp.cpp
+call cl example.cpp rsp.obj
