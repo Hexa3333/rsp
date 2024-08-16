@@ -1,4 +1,6 @@
+```
   .rsp format example:
+
 []
 # because bla bla
  # foo
@@ -12,7 +14,6 @@
 [bots are gay]:
 "No u"
 
---------------------------
 
 Special Headers:
 _DEFAULT_: default replies ([])
@@ -21,3 +22,4 @@ _SHOUTING_: shouting (UPPERCASE) replies
 TERMINOLOGY:
 header - Text wrapped around brackets that is basically a trigger word
 responses - Text wrapped around commas that are text associated to headers
+```
