@@ -5,9 +5,6 @@
 
 /* TODO: Change line-per to multi line */
 
-/* TODO: special headers should be documented
- * _DEFAULT_: default header that is empty ([]) */
-
 /* TODO: ADD TRIM FUNCTIONS */
 
 #include <cstring>
